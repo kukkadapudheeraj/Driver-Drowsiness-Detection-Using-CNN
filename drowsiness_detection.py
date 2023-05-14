@@ -91,51 +91,6 @@ history = model_res50.fit(
 )
 
 
-
-
-
-%matplotlib inline
-
-import matplotlib.image  as mpimg
-import matplotlib.pyplot as plt
-
-#-----------------------------------------------------------
-# Retrieve a list of list results on training and test data
-# sets for each training epoch
-#-----------------------------------------------------------
-acc=history.history['accuracy']
-val_acc=history.history['val_accuracy']
-loss=history.history['loss']
-val_loss=history.history['val_loss']
-
-epochs=range(len(acc)) # Get number of epochs
-
-#------------------------------------------------
-# Plot training and validation accuracy per epoch
-#------------------------------------------------
-plt.plot(epochs, acc, 'r', "Training Accuracy")
-plt.plot(epochs, val_acc, 'b', "Validation Accuracy")
-plt.title('Training and validation accuracy')
-plt.figure()
-
-#------------------------------------------------
-# Plot training and validation loss per epoch
-#------------------------------------------------
-plt.plot(epochs, loss, 'r', "Training Loss")
-plt.plot(epochs, val_loss, 'b', "Validation Loss")
-plt.title('Training and validation loss')
-plt.legend()
-
-plt.show()
-
-
-
-
-
-
-
-
-
 model_res50.save('drowsines_model_1_ResNet50_Binary2.h5')
 
 
@@ -151,5 +106,206 @@ X_input = np.array(new_array).reshape(1, 224, 224, 3)
 # plt.imshow(new_array)
 prediction = model_res50.predict(X_input/255.0)
 prediction
+
+
+
+
+
+%matplotlib inline
+
+import matplotlib.image  as mpimg
+import matplotlib.pyplot as plt
+
+
+
+
+
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+
+# Get predictions for the validation data
+y_pred = model_res50.predict(validation_generator)
+y_pred = np.argmax(y_pred, axis=1)
+y_true = validation_generator.classes
+
+# Generate the confusion matrix
+cm = confusion_matrix(y_true, y_pred)
+
+# Plot the confusion matrix
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=True, cmap='Blues', fmt='d', xticklabels=validation_generator.class_indices, yticklabels=validation_generator.class_indices)
+plt.xlabel('Predicted Labels')
+plt.ylabel('True Labels')
+plt.title('Confusion Matrix')
+plt.show()
+
+
+
+
+
+
+# Plot training and validation accuracy per epoch
+plt.plot(history.history['accuracy'], 'r', label='Training Accuracy')
+plt.plot(history.history['val_accuracy'], 'b', label='Validation Accuracy')
+plt.title('Training and Validation Accuracy')
+plt.legend()
+plt.show()
+
+# Plot training and validation loss per epoch
+plt.plot(history.history['loss'], 'r', label='Training Loss')
+plt.plot(history.history['val_loss'], 'b', label='Validation Loss')
+plt.title('Training and Validation Loss')
+plt.legend()
+plt.show()
+
+
+
+
+
+
+
+from tensorflow.keras.callbacks import LearningRateScheduler
+
+def lr_schedule(epoch):
+    """Learning rate scheduler."""
+    initial_lr = 0.001
+    decay_factor = 0.1
+    decay_epochs = 3
+
+    if epoch < decay_epochs:
+        return initial_lr
+    else:
+        return initial_lr * decay_factor
+
+# Create a learning rate scheduler callback
+lr_scheduler = LearningRateScheduler(lr_schedule)
+
+# Fit the model with the learning rate scheduler
+history = model_res50.fit(train_generator,
+                          steps_per_epoch=steps_per_epoch_training,
+                          validation_steps=steps_per_epoch_validation,
+                          epochs=7,
+                          validation_data=validation_generator,
+                          verbose=1,
+                          callbacks=[lr_scheduler])
+
+
+
+
+
+# Plot training and validation accuracy on the same plot
+plt.plot(history.history['accuracy'], 'r', label='Training Accuracy')
+plt.plot(history.history['val_accuracy'], 'b', label='Validation Accuracy')
+plt.title('Training and Validation Accuracy')
+plt.legend()
+plt.show()
+
+# Plot training and validation loss on the same plot
+plt.plot(history.history['loss'], 'r', label='Training Loss')
+plt.plot(history.history['val_loss'], 'b', label='Validation Loss')
+plt.title('Training and Validation Loss')
+plt.legend()
+plt.show()
+
+
+
+
+
+
+
+
+
+from sklearn.metrics import precision_score, recall_score, f1_score
+
+# Get predictions for the validation data
+y_pred = model_res50.predict(validation_generator)
+y_pred = np.argmax(y_pred, axis=1)
+y_true = validation_generator.classes
+
+# Calculate precision, recall, and F1-score
+precision = precision_score(y_true, y_pred)
+recall = recall_score(y_true, y_pred)
+f1 = f1_score(y_true, y_pred)
+
+# Plot precision, recall, and F1-score
+plt.bar(['Precision', 'Recall', 'F1-score'], [precision, recall, f1])
+plt.title('Precision, Recall, and F1-score')
+plt.show()
+
+
+
+
+
+
+from sklearn.metrics import roc_curve, auc
+
+# Get predicted probabilities for the positive class
+y_pred_prob = model_res50.predict(validation_generator)[:, 1]
+
+# Calculate false positive rate, true positive rate, and thresholds
+fpr, tpr, thresholds = roc_curve(y_true, y_pred_prob)
+
+# Calculate AUC (Area Under the Curve)
+roc_auc = auc(fpr, tpr)
+
+# Plot ROC curve
+plt.plot(fpr, tpr, label='ROC curve (AUC = %0.2f)' % roc_auc)
+plt.plot([0, 1], [0, 1], 'k--')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic (ROC) Curve')
+plt.legend(loc='lower right')
+plt.show()
+
+
+
+
+
+
+
+
+
+# Plot learning curves for accuracy
+plt.plot(history.history['accuracy'], 'r', label='Training Accuracy')
+plt.plot(history.history['val_accuracy'], 'b', label='Validation Accuracy')
+plt.title('Learning Curves - Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
+# Plot learning curves for loss
+plt.plot(history.history['loss'], 'r', label='Training Loss')
+plt.plot(history.history['val_loss'], 'b', label='Validation Loss')
+plt.title('Learning Curves - Loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+
+
+
+
+
+
+
+
+from sklearn.metrics import precision_recall_curve
+
+# Get predicted probabilities for the positive class
+y_pred_prob = model_res50.predict(validation_generator)[:, 1]
+
+# Calculate precision, recall, and thresholds
+precision, recall, thresholds = precision_recall_curve(y_true, y_pred_prob)
+
+# Plot precision-recall curve
+plt.plot(recall, precision)
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.title('Precision-Recall Curve')
+plt.show()
+
+
 
 
