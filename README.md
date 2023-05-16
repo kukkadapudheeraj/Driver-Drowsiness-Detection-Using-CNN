@@ -17,7 +17,7 @@ The driver drowsiness detection model is build using the following steps:
 The dataset contains 2 directories **closed_eye and open_eye**, which correspond to the two classes of images that this model distinguishes between.
 
 **steps to access the dataset:**
-1) Download the dataset from the following kaggle link: ''
+1) Download the dataset from the following kaggle link: 'https://www.kaggle.com/datasets/kutaykutlu/drowsiness-detection'
 2) Place the dataset in a directory
 3) update the following variable in the code with your local path for the directory:
 
