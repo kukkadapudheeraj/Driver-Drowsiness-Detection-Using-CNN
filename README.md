@@ -71,7 +71,7 @@ The model is trained for 7 epochs with a validation split of 20%, a batch size o
 
 ***After training the model for 7 times the model has acheived an accuracy of 0.9949 and loss of 0.0155.***
 
-<img width="500" alt="Learning Curves-Loss" src="https://github.com/kukkadapudheeraj/Driver-Drowsiness-Detection-Using-CNN/assets/39270552/8c4709f3-117f-456a-a4fd-fb4a13777cd3"><br>
+
 ![training_and_validation-accuracy](https://github.com/kukkadapudheeraj/Driver-Drowsiness-Detection-Using-CNN/assets/39270552/83891042-81df-4687-8bec-6cbe1609d485)
 
 ![training_and_validation-loss](https://github.com/kukkadapudheeraj/Driver-Drowsiness-Detection-Using-CNN/assets/39270552/a74d936e-2877-4740-bd98-a53a9dfd6c25)
@@ -80,7 +80,8 @@ The model is trained for 7 epochs with a validation split of 20%, a batch size o
 <img width="500" alt="precision_recall_f1" src="https://github.com/kukkadapudheeraj/Driver-Drowsiness-Detection-Using-CNN/assets/39270552/ac521391-12ea-4cca-893c-32c0d34e17dc"><br>
 <img width="500" alt="confusion_matrix" src="https://github.com/kukkadapudheeraj/Driver-Drowsiness-Detection-Using-CNN/assets/39270552/b4fe0334-66c5-473d-8469-5a390e9e9325"><br>
 <img width="500" alt="precision_recall_curve" src="https://github.com/kukkadapudheeraj/Driver-Drowsiness-Detection-Using-CNN/assets/39270552/f51d47e9-f95e-4a45-9a55-252b986a2f91"><br>
-<img width="500" alt="Learning Curves-Accuracy" src="https://github.com/kukkadapudheeraj/Driver-Drowsiness-Detection-Using-CNN/assets/39270552/9341968a-ab76-4d77-81fa-ace31fee3d9d">
+<img width="500" alt="Learning Curves-Accuracy" src="https://github.com/kukkadapudheeraj/Driver-Drowsiness-Detection-Using-CNN/assets/39270552/9341968a-ab76-4d77-81fa-ace31fee3d9d"><br>
+<img width="500" alt="Learning Curves-Loss" src="https://github.com/kukkadapudheeraj/Driver-Drowsiness-Detection-Using-CNN/assets/39270552/8c4709f3-117f-456a-a4fd-fb4a13777cd3">
 
 
 
